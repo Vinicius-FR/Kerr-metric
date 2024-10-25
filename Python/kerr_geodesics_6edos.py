@@ -11,68 +11,13 @@ from kerr_parameters import *
 mu = -1
 M = 1.0  # Massa do buraco negro
 a = 0.5  # Fator de Kerr
-# E = 0.935179  # Energia por unidade de massa
-# Lz = 2.37176  # Momento angular por unidade de massa
 Rs = 2 * M  # Raio de Schwarzschild
-
-# Condições iniciais
-r0 = 2 * Rs
-theta0 = np.pi / 2
-phi0 = 0.0
-t0 = 0.0
-u_r0 = 0.0
-u_theta0 = 0.0
 
 # Parâmetros de integração
 lambda_ = 0.0
 h = 0.01  # Passo de integração
 n_steps = 20000
 
-# Órbita circular para mu = -1 no equador
-# mu = -1
-# E = kerr_circular_orbits.equatorial_energy(r0, M, a, 1)
-# Lz = kerr_circular_orbits.equatorial_angular_momentum(r0, M, a, 1)
-
-# Órbita circular para mu = 0 no equador
-# mu = 0
-# possible_light_radii = kerr_circular_orbits.equatorial_light_radii(M, a)
-# r0 = possible_light_radii[0]
-# print(f"Raio da órbita circular do fóton: {r0}")
-# Lz = kerr_circular_orbits.equatorial_photon_angular_momentum(r0, M, a, E)
-# print(f"Momento angular da órbita circular do fóton {Lz} com energia {E}")
-
-# Perturbações
-# delta_r = 1.01  # Perturbação no raio inicial
-# delta_ur = 1.01  # Perturbação na velocidade radial inicial
-
-# Aplicar perturbações nas condições iniciais
-# r0 = r0 * delta_r
-# u_r0 = u_r0 * delta_ur
-
-# Órbita polar de raio constante para mu = -1
-# mu = -1
-# u_theta0 = 1.0
-# E = kerr_circular_orbits.polar_energy(r0, M, a) * 1.1
-# Lz = 0.0
-
-# Queda livre
-# Lz = 0
-
-# Trajetória não plana
-# theta0 = np.pi / 4
-
-# Teste de captura de partícula
-# r0 = 8.0
-# theta0 = np.pi / 2
-# phi0 = 0.0
-# t0 = 0.0
-# u_r0 = -0.4
-# u_theta0 = 1.0
-# mu = -1
-# E = kerr_circular_orbits.polar_energy(r0, M, a) * 1.1
-# Lz = 0.0
-
-# r0 = r_E_plus(M, a, theta0) # Fóton estático instável (L_z < 0)
 
 delta_ur = 1.0
 
@@ -93,7 +38,7 @@ while(True):
 
     if teste_id == '1':
         h = 0.1
-        r0 = 2 * Rs
+        r0 = 4 * Rs
         theta0 = np.pi / 2
         phi0 = 0.0
         t0 = 0.0
@@ -113,13 +58,8 @@ while(True):
             teste_id2 = input(texto_input2)
 
             if teste_id2 == '1':
-                # Perturbações
-                delta_r = 1.01  # Perturbação no raio inicial
-                delta_ur = 0.000  # Perturbação na velocidade radial inicial
-
-                # Aplicar perturbações nas condições iniciais
-                r0 = r0 * delta_r
-                # u_r0 = u_r0 * delta_ur
+                E = E * 1.001
+                Lz = Lz * 1.001
                 break
             elif teste_id2 == '2':
                 break
@@ -150,13 +90,8 @@ while(True):
             teste_id2 = input(texto_input2)
 
             if teste_id2 == '1':
-                # Perturbações
-                delta_r = 1.01  # Perturbação no raio inicial
-                delta_ur = 1.01  # Perturbação na velocidade radial inicial
-
-                # Aplicar perturbações nas condições iniciais
-                r0 = r0 * delta_r
-                # u_r0 = u_r0 * delta_ur
+                E = E * 1.01
+                Lz = Lz * 1.01
                 break
             elif teste_id2 == '2':
                 break
@@ -170,8 +105,6 @@ while(True):
         theta0 = np.pi / 2
         phi0 = 0.0
         t0 = 0.0
-        # u_r0 = 0.0
-        # u_theta0 = 1.0
         mu = -1
         E = kerr_circular_orbits.polar_energy(r0, M, a)
         Lz = 0.0
@@ -184,8 +117,6 @@ while(True):
         theta0 = np.pi / 2
         phi0 = 0.0
         t0 = 0.0
-        # u_r0 = 0.0
-        # u_theta0 = 0.0
         mu = -1
         E = kerr_circular_orbits.equatorial_energy(r0, M, a, 1)
         Lz = 0.0
@@ -198,8 +129,6 @@ while(True):
         theta0 = np.pi / 2
         phi0 = 0.0
         t0 = 0.0
-        # u_r0 = 0.0
-        # u_theta0 = 1.0
         mu = -1
         E = kerr_circular_orbits.polar_energy(r0, M, a) * 1.1
         Lz = a * E
@@ -212,8 +141,6 @@ while(True):
         theta0 = np.pi / 2
         phi0 = 1.0
         t0 = 0.0
-        # u_r0 = 0.0
-        # u_theta0 = 1.0
         mu = 0
         E = kerr_circular_orbits.polar_energy(r0, M, a) 
         Lz = 3.0
@@ -230,8 +157,6 @@ while(True):
         theta0 = np.pi / 2
         phi0 = 0.0
         t0 = 0.0
-        # u_r0 = 0.9
-        # u_theta0 = 0.0
         mu = 0
         E = kerr_circular_orbits.polar_energy(10 * Rs, M, a) 
         Lz = 3.0
@@ -248,8 +173,6 @@ while(True):
         theta0 = np.pi / 2
         phi0 = 0.0
         t0 = 0.0
-        # u_r0 = 0.9
-        # u_theta0 = 0.0
         mu = 0
         E = kerr_circular_orbits.polar_energy(10 * Rs, M, a) 
         Lz = 3.0
