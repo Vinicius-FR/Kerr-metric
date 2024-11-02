@@ -183,6 +183,7 @@ while(True):
         pass
 
 print(f'Energia: {E}')
+print(f'Momento Angular: {Lz}')
 # ------------------------------------------------------------- INTEGRAÇÃO -------------------------------------------------------------
 
 u_r0 = u_r(Lz, E, a, mu, Q, r0, Rs)[1] * delta_ur # escolher sinal da velocidade inicial
@@ -237,12 +238,19 @@ def runge_kutta_step(state, lambda_, h):
 
     return state + (h / 6.0) * (k1 + 2 * k2 + 2 * k3 + k4)
 
-# Conversão para coordenadas cartesianas
+# Conversão para coordenadas "cartesianas" (Boyer-Lindquist)
 def to_cartesian(r, theta, phi):
     x = r * np.sin(theta) * np.cos(phi)
     y = r * np.sin(theta) * np.sin(phi)
     z = r * np.cos(theta)
     return x, y, z
+
+# Conversão para coordenadas cartesianas tradicionais
+# def to_cartesian(r, theta, phi):
+#     x = (r**2 + a**2) * np.sin(theta) * np.cos(phi)
+#     y = (r**2 + a**2) * np.sin(theta) * np.sin(phi)
+#     z = r * np.cos(theta)
+#     return x, y, z
 
 # Definir uma tolerância para a variação de t
 t_tolerancia = 0.05  # Ajuste conforme necessário

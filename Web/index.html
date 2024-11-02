@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computational Simulations of Trajectories in the Presence of Rotating Black Holes</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1, h2 {
+            color: #444;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+            margin-top: 1em;
+        }
+        .equation {
+            margin: 10px 0;
+            font-style: italic;
+            text-align: left;
+            color: #555;
+        }
+        .button-link {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #0066cc;
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+            text-align: center;
+            width: 100%;
+        }
+        .references {
+            margin-top: 30px;
+        }
+        .italic {
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Computational Simulations of Trajectories in the Presence of Rotating Black Holes</h1>
+    <p><strong>Author:</strong> Vinícius Ferreira Rodrigues, Esmerindo de Sousa Bernardes</p>
+    <p><strong>Date:</strong> November 2024</p>
+
+    <h2>Introduction</h2>
+    <p>This web project is primarily inspired by (<a href="https://alexnieddu.github.io/Kerr-Black-Holes/" target="_blank">Alexander Nieddu's website</a>). Special thanks to Alexander for the inspiration.</p>
+    <p>The objective here is to complement my Python simulations (<a href="https://github.com/Vinicius-FR/Kerr-metric/tree/master/Python">link</a>) and improve aspects of Alexander's simulations concerning particle trajectories in the Kerr metric, which describes the space-time around rotating black holes.</p>
+
+    <h2>Equations</h2>
+    <p>The metric definition is the same and is detailed in my dissertation (<a href="#link">link</a>). However, the ordinary differential equations (ODEs) describing the geodesics, which we derived and verified through symbolic computation in Maple, numerical integration in Python, and comparison with various references, have minor differences:</p>
+
+    <div class="equation">
+        \[
+        \begin{align*}
+            \frac{dr}{d \lambda} &= \frac{\Delta}{\Sigma} u_r \\[8pt]
+            \frac{d\theta}{d \lambda} &= \frac{1}{\Sigma} u_\theta \\[8pt]
+            \frac{d u_r}{d \lambda} &= \frac{\bar{m} r}{\Sigma} - \frac{(2 r - R_s) u_r^2}{2 \Sigma} \\
+            &\quad - \frac{1}{2 \Delta^2 \Sigma} \left[ \left(2 E L_z R_s a - E^2 R_s a^2 - 2E^2a^2r - 4 E^2 r^3\right) \Delta \right. \\
+            &\quad \left. - \left(2 E L_z R_s a r - L_z^2 a^2 - E^2 R_s a^2 r - E^2a^2r^2 - E^2 r^4\right) (2 r - R_s) \right] \\[8pt]
+            \frac{d u_\theta}{d \lambda} &= \frac{\cos \theta \sin \theta}{\Sigma} \left( \frac{L_z^2}{\sin^4 \theta} - a^2 (E^2 + \bar{m}) \right) \\[8pt]
+            \frac{d\phi}{d \lambda} &= \frac{\Sigma \left( E \sin^2 \theta R_s a r + L_z \cos^2 \theta a^2 - L_z R_s r + L_z r^2 \right)}{\left( \sin^2 \theta R_s^2 a^2 r^2 + \mathrm{A} \cos^2 \theta a^2 - \mathrm{A} R_s r + \mathrm{A} r^2 \right) \sin^2 \theta} \\[8pt]
+            \frac{dt}{d \lambda} &= \frac{\Sigma (-L_z R_s a r + \mathrm{A} E)}{\sin^2 \theta R_s^2 a^2 r^2 + \mathrm{A} \cos^2 \theta a^2 - \mathrm{A} R_s r + \mathrm{A} r^2}
+        \end{align*}
+        \]
+    </div>
+
+    <p>In my Python simulations, I used Boyer-Lindquist coordinates to plot 3D trajectories as follows:</p>
+    <div class="equation">
+        \[
+        \begin{align*}
+            x &= r \sin\theta \cos\phi \\[8pt]
+            y &= r \sin\theta \sin\phi \\[8pt]
+            z &= r \cos\theta
+        \end{align*}
+        \]
+    </div>
+
+    <p>For visualization, in Cartesian coordinates (as seen by a distant observer), we have:</p>
+    <div class="equation">
+        \[
+        \begin{align*}
+            x &= \sqrt{r^2+a^2} \sin\theta \cos\phi \\[8pt]
+            y &= \sqrt{r^2+a^2} \sin\theta \sin\phi \\[8pt]
+            z &= r \cos\theta
+        \end{align*}
+        \]
+    </div>
+
+    <p><span class="italic">Note:</span> This does not include gravitational lensing effects, which we may attempt to include in future versions.</p>
+
+    <h2>Tutorial for the Simulation Platform</h2>
+    <p>To start the simulation, input initial conditions for the Boyer-Lindquist coordinates \((t_0, r_0, \theta_0, \phi_0)\), the black hole parameters \(M\) and \(a\), and the particle parameters \(\bar{m}\), \(E\), \(L_z\), \(Q\), as well as the signs of \(u_{r_0}\) and \(u_{\theta_0}\). With these, the values of \(u_{r_0}\) and \(u_{\theta_0}\) are automatically determined from the relation between \(Q\), \(r\), \(\theta\), \(u_r\), and \(u_\theta\).</p>
+
+    <p>The integration and plotting are performed simultaneously in JavaScript, allowing you to pause the simulation and adjust the integration step \(h\) before resuming. During the simulation, in the bottom-left corner, you can observe the coordinates \((r(t), \theta(t), \phi(t))\), the velocity components \((u^r(t), u^\theta(t), u^\phi(t))\), and the total velocity \(v(t)\) as they evolve over time.</p>
+
+    <p>To handle divergence of the time \(t\) and the azimuthal angle \(\phi\) when the particle nears the horizons, a dynamic step adjustment is implemented for when \(t\) grows rapidly. However, due to JavaScript's limited precision (which is less controllable than Python’s), the integration may still diverge near the event horizons (the same will happen eventually in Python), showing that the observer perceives the particle falling slower and never crossing the horizon.</p>
+
+    <a href="#simulationLink" class="button-link">Access the Simulation</a>
+    <p>Additionally, you can clone the GitHub repository to experiment and make your improvements: <a href="https://github.com/Vinicius-FR/Kerr-metric/">GitHub Repository</a></p>
+
+    <h2>References</h2>
+    <p class="references">For references, please refer to the end of my dissertation (<a href="#link">link</a>).</p>
+
+</body>
+</html>
