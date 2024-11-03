@@ -176,6 +176,8 @@ for (var i = 0; i < total+1; i++) {
     ringSingularity[i] = new Array(total); 
 }
 
+let markerColor;
+
 function setup() {
 
 	createCanvas(width, height, WEBGL);
@@ -187,6 +189,7 @@ function setup() {
 	innerHorizonColor = color('hsba(206, 100%, 50%, 0.2)');
 	ringSingularityColor = color('hsba(255, 100%, 50%, 1)');
 	geodesicColor = color('hsba(0, 100%, 100%, 1)');
+	markerColor = color('hsba(220, 100%, 100%, 1)');
 
 	r0 = r;
 	theta0 = theta;
@@ -212,43 +215,53 @@ function setup() {
 
 
 function draw() {
-	
-	if(darkMode) {
-		background(0);
-		document.getElementsByTagName("body")[0].style.color = "white";
-	}
-	else {
-		background(255);
-		document.getElementsByTagName("body")[0].style.color = "black";
-	}
-	a = parseFloat(document.getElementById("rotationSlider").value);
-	M = parseFloat(document.getElementById("massSlider").value);
-	dt = parseFloat(document.getElementById("stepSize").value);
-// 	scale = document.getElementById("resSlider").value;
-	// rotateX(Math.PI/2);
-	if(animZ) rotateZ( millis() / 10000 );
-	if(animX) rotateX( millis() / 10000 );
+    if(darkMode) {
+        background(0);
+        document.getElementsByTagName("body")[0].style.color = "white";
+    } else {
+        background(255);
+        document.getElementsByTagName("body")[0].style.color = "black";
+    }
 
-	if(start) {
-		data.push([ r, theta, phi, t, u_r, u_theta] );
-		calculateGeodesic();
-	}
-  	drawSurfaces();
-	drawTable();
+    a = parseFloat(document.getElementById("rotationSlider").value);
+    M = parseFloat(document.getElementById("massSlider").value);
+    dt = parseFloat(document.getElementById("stepSize").value);
 
-	points.push(new p5.Vector(scale * cartesian(r, theta, phi)[0], scale * cartesian(r, theta, phi)[1], scale * cartesian(r, theta, phi)[2]));
+    if(animZ) rotateZ( millis() / 10000 );
+    if(animX) rotateX( millis() / 10000 );
 
-	orbitControl();
-	//scale(15);
+    if(start) {
+        data.push([ r, theta, phi, t, u_r, u_theta]);
+        calculateGeodesic();
+    }
+    
+    drawSurfaces();
+    drawTable();
 
-	noFill();
-	beginShape();
-	for (let v of points) {
-		stroke(geodesicColor);
-		strokeWeight(2);
-		vertex(v.x, v.y, v.z);
-	}
-	endShape();
+    // Calculate and draw the marker at the current particle position
+    let currentPos = cartesian(r, theta, phi);
+    let markerPos = new p5.Vector(scale * currentPos[0], scale * currentPos[1], scale * currentPos[2]);
+    
+    fill(markerColor);
+    noStroke();
+    push();
+    translate(markerPos.x, markerPos.y, markerPos.z);
+    sphere(2); // small sphere as marker
+    pop();
+
+    points.push(markerPos);
+
+    orbitControl();
+
+    // Draw the trajectory
+    noFill();
+    beginShape();
+    for (let v of points) {
+        stroke(geodesicColor);
+        strokeWeight(2);
+        vertex(v.x, v.y, v.z);
+    }
+    endShape();
 }
 
 function calculateGeodesic() {
