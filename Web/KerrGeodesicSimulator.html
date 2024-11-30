@@ -385,7 +385,7 @@ function calculateGeodesic() {
 	u_r += d_u_r;
 	u_theta += d_u_theta;
 
-	if (Math.abs(d_t) >= 0.05) {
+	if (Math.abs(d_t) >= 0.05 && r <= Rs) {
 		dt = dt * 0.9
 		document.getElementById("stepSize").value = dt;
 		console.log(dt)
@@ -724,6 +724,10 @@ function updateUthetaSign() {
   	</h1>  	
 	<table class="bottomLeft">
 		<tr>
+			<td>\( t: \)</td>
+			<td id="t"></td>
+		</tr>
+		<tr>
 			<td>\( r(t): \)</td>
 			<td id="radii"></td>
 		</tr>
@@ -735,10 +739,7 @@ function updateUthetaSign() {
 			<td>\( \varphi(t): \)</td>
 			<td id="phi"></td>
 		</tr>
-		<tr>
-			<td>\( t(t): \)</td>
-			<td id="t"></td>
-		</tr>
+		
 		<!-- <tr>
 			<td>\( u_r(t): \)</td>
 			<td id="u_r"></td>
